@@ -27,9 +27,11 @@ public class RunApp {
 
 		Boolean loggedIn = true;
 		Boolean allowed = false;
+		Boolean stepPassed = false;
 		RunApp app = new RunApp();
 		String appName = "snapchat";
-		app.openApp(appName, loggedIn, allowed);
+		stepPassed = app.openApp(appName, loggedIn, allowed);
+		System.out.println("This test: " + stepPassed);
 
 	}
 
@@ -45,26 +47,30 @@ public class RunApp {
 
 		Activity activity = null;
 
-		Boolean doAllowedValidation1 = null;
-		Boolean doAllowedValidation2 = null;
-		Boolean doAllowedValidation3 = null;
-		Boolean doAllowedValidation4 = null;
-		Boolean doAllowedValidation5 = null;
+		Boolean doAllowedValidation1 = false;
+		Boolean doAllowedValidation2 = false;
+		Boolean doAllowedValidation3 = false;
+		Boolean doAllowedValidation4 = false;
+		Boolean doAllowedValidation5 = false;
 
-		Boolean doBlockedValidation1 = null;
-		Boolean doBlockedValidation2 = null;
-		Boolean doBlockedValidation3 = null;
-		Boolean doBlockedValidation4 = null;
-		Boolean doBlockedValidation5 = null;
+		Boolean doBlockedValidation1 = false;
+		Boolean doBlockedValidation2 = false;
+		Boolean doBlockedValidation3 = false;
+		Boolean doBlockedValidation4 = false;
+		Boolean doBlockedValidation5 = false;
 
 		Boolean stepPassed = null;
 
 		String allowedValidation1 = null;
 		String allowedValidation2 = null;
 		String allowedValidation3 = null;
+		String allowedValidation4 = null;
+		String allowedValidation5 = null;
 		String blockedValidation1 = null;
 		String blockedValidation2 = null;
 		String blockedValidation3 = null;
+		String blockedValidation4 = null;
+		String blockedValidation5 = null;
 		String didClickWork1 = null;
 		String didClickWork2 = null;
 		String didClickWork3 = null;
@@ -93,12 +99,14 @@ public class RunApp {
 				} else if (allowed == false) {
 					// L Need 1 FaC, 1 Swipe, 1 Wait B
 					blockedValidation1 = "//*[@id='hova_nav_stories_dark']";
-					blockedValidation2 = "seetest:client.swipe(\"Up\", 500, 500)";
-					blockedValidation3 = "//*[@id='notification_content']";
+					blockedValidation2 = "((//*[@id='recycler_view']/*/*[@id='frame'])[1]/*[@class='android.widget.RelativeLayout' and @width>0 and @height>0])[1]";
+					blockedValidation4 = "//*[@class='android.widget.ImageView' and @height>0 and ./parent::*[@class='android.widget.LinearLayout']]";
+					blockedValidation5 = "seetest:client.swipe(\"Down\", 500, 500)";
 					didClickWork1 = "//*[@text='Discover']";
 					doBlockedValidation1 = true;
-					doBlockedValidation5 = true;
+					doBlockedValidation2 = true;
 					doBlockedValidation4 = true;
+					doBlockedValidation5 = true;
 				} else {
 					throw new IllegalStateException("\n Snapchat is logged in but not allowed or denied");
 				}
@@ -111,12 +119,12 @@ public class RunApp {
 				openAppValidation = "//*[@text='LOG IN']";
 				if (allowed == true) {
 					// NL Need 1 Wait and Find A
-					allowedValidation1 = "//*[@id='nueva_nav_default_camera_button']";
+					allowedValidation4 = "//*[@id='nueva_nav_default_camera_button']";
 					doAllowedValidation4 = true;
 				} else if (allowed == false) {
 					// NL Need 1 Wait and Find B
 					doBlockedValidation4 = true;
-					blockedValidation1 = "//*[@class='android.widget.FrameLayout' and @width>0 and ./*[@class='android.widget.FrameLayout' and ./*[@id='content']]]";
+					blockedValidation4 = "//*[@class='android.widget.FrameLayout' and @width>0 and ./*[@class='android.widget.FrameLayout' and ./*[@id='content']]]";
 				} else {
 					throw new IllegalStateException("\n Snapchat is not logged in but not allowed or denied");
 				}
@@ -157,11 +165,11 @@ public class RunApp {
 				if (allowed == true) {
 					// NL Need 1 Wait and Find A
 					doAllowedValidation4 = true;
-					allowedValidation1 = "//*[@text='Recently played']";
+					allowedValidation4 = "//*[@text='Recently played']";
 				} else if (allowed == false) {
 					// NL Need 1 Wait and Find B
 					doBlockedValidation4 = true;
-					blockedValidation1 = "//*[@text=concat('You', \"'\", 're offline')]";
+					blockedValidation4 = "//*[@text=concat('You', \"'\", 're offline')]";
 				} else {
 					throw new IllegalStateException("\n Spotify is not logged in but not allowed or denied");
 				}
@@ -228,7 +236,7 @@ public class RunApp {
 					// L Need 2 FaC, 1 Wait and Find A
 					allowedValidation1 = "//*[@contentDescription='Search and explore']";
 					allowedValidation2 = "//*[@id='pulse_emitter']";
-					allowedValidation3 = "//*[@id='action_bar_shadow']";
+					allowedValidation4 = "//*[@id='action_bar_shadow']";
 					didClickWork1 = "//*[@id='action_bar_search_edit_text']";
 					didClickWork2 = "//*[@text='Top live videos']";
 					doAllowedValidation1 = true;
@@ -237,8 +245,8 @@ public class RunApp {
 				} else if (allowed == false) {
 					// L Need 1 FaC, 1 Swipe, 1 Wait B
 					blockedValidation1 = "//*[@id='tab_icon' and ./parent::*[@contentDescription='Home']]";
-					blockedValidation2 = "seetest:client.swipe(\"Up\", 500, 500)";
-					blockedValidation3 = "//*[@class='android.widget.ImageView' and ./parent::*[@id='row_load_more_button']]";
+					blockedValidation5 = "seetest:client.swipe(\"Up\", 500, 500)";
+					blockedValidation4 = "//*[@class='android.widget.ImageView' and ./parent::*[@id='row_load_more_button']]";
 					didClickWork1 = "//*[@id='action_bar_left_button']";
 					doBlockedValidation1 = true;
 					doBlockedValidation5 = true;
@@ -255,11 +263,11 @@ public class RunApp {
 				openAppValidation = "//*[@text='Already have an account? Log in.']";
 				if (allowed == true) {
 					// NL Need 1 Wait and Find A
-					allowedValidation1 = "//*[@id='tab_icon' and ./parent::*[@contentDescription='Home']]";
+					allowedValidation4 = "//*[@id='tab_icon' and ./parent::*[@contentDescription='Home']]";
 					doAllowedValidation4 = true;
 				} else if (allowed == false) {
 					// NL Need 1 Wait and Find B
-					blockedValidation1 = "//*[@text='An unknown network error has occurred.']";
+					blockedValidation4 = "//*[@text='An unknown network error has occurred.']";
 					doBlockedValidation4 = true;
 				} else {
 					throw new IllegalStateException("\n Instagram is not logged in but not allowed or denied");
@@ -277,12 +285,12 @@ public class RunApp {
 		// we can now move on to executing the tests on the device
 		// based on if it's allowed and logged in
 
-		Boolean testCasePassed1 = null;
-		Boolean testCasePassed2 = null;
-		Boolean testCasePassed3 = null;
-		Boolean testCasePassed4 = null;
-		Boolean testCasePassed5 = null;
-		Boolean testCasePassed6 = null;
+		String testCasePassed1 = "null";
+		String testCasePassed2 = "null";
+		String testCasePassed3 = "null";
+		String testCasePassed4 = "null";
+		String testCasePassed5 = "null";
+		String testCasePassed6 = "null";
 
 		driver.startActivity(activity);
 		if (loggedIn == true) {
@@ -293,10 +301,10 @@ public class RunApp {
 					if (driver.findElement(By.xpath(allowedValidation1)) != null) {
 						driver.findElement(By.xpath(allowedValidation1)).click();
 						if (driver.findElement(By.xpath(didClickWork1)) != null) {
-							testCasePassed1 = true;
+							testCasePassed1 = "pass";
 						}
 					} else {
-						testCasePassed1 = false;
+						testCasePassed1 = "fail";
 					}
 				}
 
@@ -304,39 +312,39 @@ public class RunApp {
 					if (driver.findElement(By.xpath(allowedValidation2)) != null) {
 						driver.findElement(By.xpath(allowedValidation2)).click();
 						if (driver.findElement(By.xpath(didClickWork2)) != null) {
-							testCasePassed2 = true;
+							testCasePassed2 = "pass";
 						}
 					} else {
-						testCasePassed2 = false;
+						testCasePassed2 = "fail";
 					}
 				}
-
+				
 				if (doAllowedValidation3 == true) {
 					if (driver.findElement(By.xpath(allowedValidation3)) != null) {
 						driver.findElement(By.xpath(allowedValidation3)).click();
 						if (driver.findElement(By.xpath(didClickWork3)) != null) {
-							testCasePassed3 = true;
+							testCasePassed3 = "pass";
 						}
 					} else {
-						testCasePassed3 = false;
+						testCasePassed3 = "fail";
 					}
 				}
 
 				if (doAllowedValidation4 == true) {
 					if (new WebDriverWait(driver, 11)
-							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(allowedValidation1))) != null) {
-						testCasePassed4 = true;
+							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(allowedValidation4))) != null) {
+						testCasePassed4 = "pass";
 					} else {
-						testCasePassed4 = false;
+						testCasePassed4 = "fail";
 					}
 				}
 
 				if (doAllowedValidation5 == true) {
-					if (driver.executeScript(allowedValidation1) != null) {
-						driver.executeScript(allowedValidation1);
-						testCasePassed5 = true;
+					if (driver.executeScript(allowedValidation5) != null) {
+						driver.executeScript(allowedValidation5);
+						testCasePassed5 = "pass";
 					} else {
-						testCasePassed5 = false;
+						testCasePassed5 = "fail";
 					}
 				}
 			} else if (allowed == false) {
@@ -344,46 +352,46 @@ public class RunApp {
 					if (driver.findElement(By.xpath(blockedValidation1)) != null) {
 						driver.findElement(By.xpath(blockedValidation1)).click();
 						if (driver.findElement(By.xpath(didClickWork1)) != null) {
-							testCasePassed1 = true;
+							testCasePassed1 = "pass";
 						}
 					} else {
-						testCasePassed1 = false;
+						testCasePassed1 = "fail";
 					}
 				}
 				if (doBlockedValidation2 == true) {
 					if (driver.findElement(By.xpath(blockedValidation2)) != null) {
 						driver.findElement(By.xpath(blockedValidation2)).click();
 						if (driver.findElement(By.xpath(didClickWork2)) != null) {
-							testCasePassed2 = true;
+							testCasePassed2 = "pass";
 						}
 					} else {
-						testCasePassed2 = false;
+						testCasePassed2 = "fail";
 					}
 				}
 				if (doBlockedValidation3 == true) {
 					if (driver.findElement(By.xpath(blockedValidation3)) != null) {
 						driver.findElement(By.xpath(blockedValidation3)).click();
 						if (driver.findElement(By.xpath(didClickWork3)) != null) {
-							testCasePassed3 = true;
+							testCasePassed3 = "pass";
 						}
 					} else {
-						testCasePassed3 = false;
+						testCasePassed3 = "fail";
 					}
 				}
 				if (doBlockedValidation4 == true) {
 					if (new WebDriverWait(driver, 11)
-							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(blockedValidation1))) != null) {
-						testCasePassed4 = true;
+							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(blockedValidation4))) != null) {
+						testCasePassed4 = "pass";
 					} else {
-						testCasePassed4 = false;
+						testCasePassed4 = "fail";
 					}
 				}
 				if (doBlockedValidation5 == true) {
-					if (driver.executeScript(blockedValidation1) != null) {
-						driver.executeScript(blockedValidation1);
-						testCasePassed5 = true;
+					if (driver.executeScript(blockedValidation5) != null) {
+						driver.executeScript(blockedValidation5);
+						testCasePassed5 = "pass";
 					} else {
-						testCasePassed5 = false;
+						testCasePassed5 = "fail";
 					}
 				}
 			} else {
@@ -396,46 +404,46 @@ public class RunApp {
 					if (driver.findElement(By.xpath(allowedValidation1)) != null) {
 						driver.findElement(By.xpath(allowedValidation1)).click();
 						if (driver.findElement(By.xpath(didClickWork1)) != null) {
-							testCasePassed1 = true;
+							testCasePassed1 = "pass";
 						}
 					} else {
-						testCasePassed1 = false;
+						testCasePassed1 = "fail";
 					}
 				}
 				if (doAllowedValidation2 == true) {
 					if (driver.findElement(By.xpath(allowedValidation2)) != null) {
 						driver.findElement(By.xpath(allowedValidation2)).click();
 						if (driver.findElement(By.xpath(didClickWork2)) != null) {
-							testCasePassed2 = true;
+							testCasePassed2 = "pass";
 						}
 					} else {
-						testCasePassed2 = false;
+						testCasePassed2 = "fail";
 					}
 				}
 				if (doAllowedValidation3 == true) {
 					if (driver.findElement(By.xpath(allowedValidation3)) != null) {
 						driver.findElement(By.xpath(allowedValidation3)).click();
 						if (driver.findElement(By.xpath(didClickWork3)) != null) {
-							testCasePassed3 = true;
+							testCasePassed3 = "pass";
 						}
 					} else {
-						testCasePassed3 = false;
+						testCasePassed3 = "fail";
 					}
 				}
 				if (doAllowedValidation4 == true) {
 					if (new WebDriverWait(driver, 11)
-							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(allowedValidation1))) != null) {
-						testCasePassed4 = true;
+							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(allowedValidation4))) != null) {
+						testCasePassed4 = "pass";
 					} else {
-						testCasePassed4 = false;
+						testCasePassed4 = "fail";
 					}
 				}
 				if (doAllowedValidation5 == true) {
-					if (driver.executeScript(allowedValidation1) != null) {
-						driver.executeScript(allowedValidation1);
-						testCasePassed5 = true;
+					if (driver.executeScript(allowedValidation5) != null) {
+						driver.executeScript(allowedValidation5);
+						testCasePassed5 = "pass";
 					} else {
-						testCasePassed5 = false;
+						testCasePassed5 = "fail";
 					}
 				}
 				// done
@@ -444,46 +452,46 @@ public class RunApp {
 					if (driver.findElement(By.xpath(blockedValidation1)) != null) {
 						driver.findElement(By.xpath(blockedValidation1)).click();
 						if (driver.findElement(By.xpath(didClickWork1)) != null) {
-							testCasePassed1 = true;
+							testCasePassed1 = "pass";
 						}
 					} else {
-						testCasePassed1 = false;
+						testCasePassed1 = "fail";
 					}
 				}
 				if (doBlockedValidation2 == true) {
 					if (driver.findElement(By.xpath(blockedValidation2)) != null) {
 						driver.findElement(By.xpath(blockedValidation2)).click();
 						if (driver.findElement(By.xpath(didClickWork2)) != null) {
-							testCasePassed2 = true;
+							testCasePassed2 = "pass";
 						}
 					} else {
-						testCasePassed2 = false;
+						testCasePassed2 = "fail";
 					}
 				}
 				if (doBlockedValidation3 == true) {
 					if (driver.findElement(By.xpath(blockedValidation3)) != null) {
 						driver.findElement(By.xpath(blockedValidation3)).click();
 						if (driver.findElement(By.xpath(didClickWork3)) != null) {
-							testCasePassed3 = true;
+							testCasePassed3 = "pass";
 						}
 					} else {
-						testCasePassed3 = false;
+						testCasePassed3 = "fail";
 					}
 				}
 				if (doBlockedValidation4 == true) {
 					if (new WebDriverWait(driver, 11)
-							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(blockedValidation1))) != null) {
-						testCasePassed4 = true;
+							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(blockedValidation4))) != null) {
+						testCasePassed4 = "pass";
 					} else {
-						testCasePassed4 = false;
+						testCasePassed4 = "fail";
 					}
 				}
 				if (doBlockedValidation5 == true) {
-					if (driver.executeScript(blockedValidation1) != null) {
-						driver.executeScript(blockedValidation1);
-						testCasePassed5 = true;
+					if (driver.executeScript(blockedValidation5) != null) {
+						driver.executeScript(blockedValidation5);
+						testCasePassed5 = "pass";
 					} else {
-						testCasePassed5 = false;
+						testCasePassed5 = "fail";
 					}
 				}
 			} else {
@@ -493,8 +501,8 @@ public class RunApp {
 			throw new IllegalStateException("\n" + appName + " login state isn't defined");
 		}
 
-		if (testCasePassed1 == false || testCasePassed2 == false || testCasePassed3 == false || testCasePassed4 == false
-				|| testCasePassed5 == false || testCasePassed6 == false) {
+		if (testCasePassed1 == "fail" || testCasePassed2 == "fail" || testCasePassed3 == "fail" || testCasePassed4 == "fail"
+				|| testCasePassed5 == "fail" || testCasePassed6 == "fail") {
 			stepPassed = false;
 			System.out.println(testCasePassed1);
 			System.out.println(testCasePassed2);
@@ -502,6 +510,9 @@ public class RunApp {
 			System.out.println(testCasePassed4);
 			System.out.println(testCasePassed5);
 			System.out.println(testCasePassed6);
+		}
+		else {
+			stepPassed = true;
 		}
 
 		return stepPassed;

@@ -25,11 +25,11 @@ public class RunApp {
 
 	public static void main(String[] args) throws MalformedURLException {
 
-		Boolean loggedIn = true;
+		Boolean loggedIn = false;
 		Boolean allowed = false;
 		Boolean stepPassed = false;
 		RunApp app = new RunApp();
-		String appName = "snapchat";
+		String appName = "facebook";
 		stepPassed = app.openApp(appName, loggedIn, allowed);
 		System.out.println("This test: " + stepPassed);
 
@@ -98,15 +98,9 @@ public class RunApp {
 					doAllowedValidation2 = true;
 				} else if (allowed == false) {
 					// L Need 1 FaC, 1 Swipe, 1 Wait B
-					blockedValidation1 = "//*[@id='hova_nav_stories_dark']";
-					blockedValidation2 = "((//*[@id='recycler_view']/*/*[@id='frame'])[1]/*[@class='android.widget.RelativeLayout' and @width>0 and @height>0])[1]";
-					blockedValidation4 = "//*[@class='android.widget.ImageView' and @height>0 and ./parent::*[@class='android.widget.LinearLayout']]";
-					blockedValidation5 = "seetest:client.swipe(\"Down\", 500, 500)";
+					blockedValidation4 = "//*[@id='notification_content']";
 					didClickWork1 = "//*[@text='Discover']";
-					doBlockedValidation1 = true;
-					doBlockedValidation2 = true;
 					doBlockedValidation4 = true;
-					doBlockedValidation5 = true;
 				} else {
 					throw new IllegalStateException("\n Snapchat is logged in but not allowed or denied");
 				}
@@ -277,13 +271,61 @@ public class RunApp {
 			}
 
 			activity = new Activity("com.instagram.android", ".activity.MainTabActivity");
+		case "facebook":
+	        dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.facebook.katana");
+	        dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".LoginActivity");
+			if (loggedIn == true) {
+				openAppValidation = "//*[@contentDescription='Selected, News Feed, Tab 1 of 5']";
+				if (allowed == true) {
+					// L Need 2 find and clicks A
+					allowedValidation1 = "//*[@contentDescription='Selected, News Feed, Tab 1 of 5']";
+					allowedValidation4 = "//*[@text='What are you listing?']]";
+					didClickWork1 = "//*[@contentDescription='Selected, Marketplace, Tab 3 of 5']";
+					doAllowedValidation1 = true;
+					doAllowedValidation4 = true;
+				} else if (allowed == false) {
+					// L 1 Wait B
+					blockedValidation1 = "//*[@contentDescription='Selected, News Feed, Tab 1 of 5']";
+					didClickWork1 = "//*[@contentDescription='Selected, Marketplace, Tab 3 of 5']";
+					blockedValidation4 = "//*[@text='Something went wrong']";
+					doBlockedValidation1 = true;
+					doBlockedValidation4 = true;
+				} else {
+					throw new IllegalStateException("\n Facebook is logged in but not allowed or denied");
+				}
+			} else if (loggedIn == false) {
+				password = "FZtestapp!";
+				username = "FZ Tester";
+				logInStep1 = "((//*[@id='(name removed)' and @class='android.widget.LinearLayout']/*[@id='(name removed)' and @class='android.widget.LinearLayout'])[1]/*/*[@class='android.widget.EditText'])[1]";
+				logInStep2 = "((//*[@id='(name removed)' and @class='android.widget.LinearLayout']/*[@id='(name removed)' and @class='android.widget.LinearLayout'])[1]/*/*[@class='android.widget.EditText'])[2]";
+				logInStep3 = "//*[@text='LOG IN']";
+				openAppValidation = "//*[@text='Log into another account']";
+				if (allowed == true) {
+					// NL Need 1 Wait and Find A
+					allowedValidation4 = "//*[@class='android.view.ViewGroup' and @width>0 and @height>0 and ./*[@contentDescription='Go to profile']]";
+					doAllowedValidation4 = true;
+				} else if (allowed == false) {
+					// NL Need 1 Wait and Find B
+					blockedValidation4 = "//*[@class='android.widget.FrameLayout' and @width>0 and ./*[@class='android.widget.FrameLayout' and ./*[@id='content']]]";
+					doBlockedValidation4 = true;
+				} else {
+					throw new IllegalStateException("\n Snapchat is not logged in but not allowed or denied");
+				}
+			} else {
+				throw new IllegalStateException("\n Snapchat isn't defined at all");
+			}
+
+			activity = new Activity("kik.android", ".chat.activity.IntroActivity");
+			break;	
 		default:
-			throw new IllegalStateException("\n No test data!");
+			throw new IllegalStateException("\n App Not Defined!");
 		}
 
-		// After all the variables have been set
-		// we can now move on to executing the tests on the device
-		// based on if it's allowed and logged in
+		/*
+		 * After all the variables have been set
+		 * we can now move on to executing the tests on the device
+		 * based on if it's allowed and logged in
+		 */
 
 		String testCasePassed1 = "null";
 		String testCasePassed2 = "null";

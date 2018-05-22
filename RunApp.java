@@ -1,4 +1,4 @@
-package test;
+package com.familyzone.qa.automation;
 
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.android.Activity;
@@ -6,16 +6,17 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.By;
-import org.junit.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RunApp {
-	
+
 	static Boolean hasSIMCard = true;
 	static String comment = "";
 	String deviceUUID = "FA6B30300278";
@@ -28,12 +29,11 @@ public class RunApp {
 
 	public static void main(String[] args) throws MalformedURLException {
 
-
-		Boolean allowed = false;
+		Boolean allowed = true;
 		Boolean loggedIn = true;
 		Boolean stepPassed = false;
 		RunApp app = new RunApp();
-		String appName = "snapchat";
+		String appName = "whatsapp";
 		String deviceName = "Android";
 		stepPassed = app.openApp(appName, deviceName, loggedIn, allowed);
 		System.out.println("This test: " + stepPassed);
@@ -45,6 +45,8 @@ public class RunApp {
 
 		String appPackage = null;
 		String appActivity = null;
+		
+		ArrayList<String> orderOfValidation = new ArrayList<String>();
 		
 		dc.setCapability("reportDirectory", reportDirectory);
 		dc.setCapability("reportFormat", reportFormat);
@@ -212,14 +214,22 @@ public class RunApp {
 				openAppValidation = "//*[@id='contact_row_container' and ./*[./*[@contentDescription='Ross']]]";
 				if (allowed == true) {
 					allowedValidation1 = "//*[@id='fab']";
+					didClickWork1 = "//*[@text='Select contact']";
 					allowedValidation6a = "//*[@class='android.widget.LinearLayout' and @width>0 and ./*[@class='android.widget.LinearLayout' and ./*[@class='android.widget.FrameLayout' and ./*[@text='Ross']]]]";
 					allowedValidation6b = "automated message no need to reply";
 					allowedValidation2 = "//*[@id='send']";
+					didClickWork2 = "//*[@id='voice_note_btn']";
 					allowedValidation4 = "//*[@id='status']";
 					doAllowedValidation1 = true;
 					doAllowedValidation6 = true;
 					doAllowedValidation2 = true;
 					doAllowedValidation4 = true;
+					
+					orderOfValidation.add("doAllowedValidation1");
+					orderOfValidation.add("doAllowedValidation6");
+					orderOfValidation.add("doAllowedValidation2");
+					orderOfValidation.add("doAllowedValidation4");
+					
 				} else if (allowed == false) {
 					blockedValidation1 = "//*[@id='fab']";
 					blockedValidation6a = "//*[@class='android.widget.LinearLayout' and @width>0 and ./*[@class='android.widget.LinearLayout' and ./*[@class='android.widget.FrameLayout' and ./*[@text='Ross']]]]";
@@ -234,11 +244,11 @@ public class RunApp {
 					throw new IllegalStateException("\n Whatsapp is logged in but not allowed or denied");
 				}
 			} else if (loggedIn == false) {
-
+				System.out.println("need more time to code this test"); // TODO
 				if (allowed == true) {
-
+					System.out.println("need more time to code this test"); // TODO
 				} else if (allowed == false) {
-
+					System.out.println("need more time to code this test"); // TODO
 				} else {
 					throw new IllegalStateException("\n Whatsapp is not logged in but not allowed or denied");
 				}
@@ -371,59 +381,116 @@ public class RunApp {
 			new WebDriverWait(driver, 10)
 					.until(ExpectedConditions.presenceOfElementLocated(By.xpath(openAppValidation)));
 			if (allowed == true) {
-				if (doAllowedValidation1 == true) {
-					if (driver.findElement(By.xpath(allowedValidation1)) != null) {
-						driver.findElement(By.xpath(allowedValidation1)).click();
-						if (driver.findElement(By.xpath(didClickWork1)) != null) {
-							testCasePassed1 = "pass";
+				for(int i = 0; i < orderOfValidation.size(); i++) {
+					switch(orderOfValidation.get(i)) {
+					case "doAllowedValidation1":
+						if (driver.findElement(By.xpath(allowedValidation1)) != null) {
+							driver.findElement(By.xpath(allowedValidation1)).click();
+							if (driver.findElement(By.xpath(didClickWork1)) != null) {
+								testCasePassed1 = "pass";
+							}
+						} else {
+							testCasePassed1 = "fail";
 						}
-					} else {
-						testCasePassed1 = "fail";
-					}
-				}
+						break;
 
-				if (doAllowedValidation2 == true) {
-					if (driver.findElement(By.xpath(allowedValidation2)) != null) {
-						driver.findElement(By.xpath(allowedValidation2)).click();
-						if (driver.findElement(By.xpath(didClickWork2)) != null) {
-							testCasePassed2 = "pass";
+					case "doAllowedValidation2":
+						if (driver.findElement(By.xpath(allowedValidation2)) != null) {
+							driver.findElement(By.xpath(allowedValidation2)).click();
+							if (driver.findElement(By.xpath(didClickWork2)) != null) {
+								testCasePassed2 = "pass";
+							}
+						} else {
+							testCasePassed2 = "fail";
+						}
+						break;
+					case "doAllowedValidation3":
+						if (driver.findElement(By.xpath(allowedValidation3)) != null) {
+							driver.findElement(By.xpath(allowedValidation3)).click();
+							if (driver.findElement(By.xpath(didClickWork3)) != null) {
+								testCasePassed3 = "pass";
+							}
+						} else {
+							testCasePassed3 = "fail";
+					}
+					case "doAllowedValidation4":
+						if (new WebDriverWait(driver, 11)
+								.until(ExpectedConditions.presenceOfElementLocated(By.xpath(allowedValidation4))) != null) {
+							testCasePassed4 = "pass";
+						} else {
+							testCasePassed4 = "fail";
+						}
+					case "doAllowedValidation5":
+						if (driver.executeScript(allowedValidation5) != null) {
+							driver.executeScript(allowedValidation5);
+							testCasePassed5 = "pass";
+						} else {
+							testCasePassed5 = "fail";
+						}
+					case "doAllowedValidation6":
+						if (driver.executeScript(allowedValidation6a) != null) {
+						driver.findElement(By.xpath(blockedValidation6a)).sendKeys(blockedValidation6b);
+					}else if (allowed == false) {
+						for(int j = 0; j < orderOfValidation.size(); j++) {
+							switch(orderOfValidation.get(j)) {
+							case "doBlockedValidation1":
+								if (driver.findElement(By.xpath(blockedValidation1)) != null) {
+									driver.findElement(By.xpath(blockedValidation1)).click();
+									if (driver.findElement(By.xpath(didClickWork1)) != null) {
+										testCasePassed1 = "pass";
+									}
+								} else {
+									testCasePassed1 = "fail";
+								}
+							case "doBlockedValidation2":
+								if (driver.findElement(By.xpath(blockedValidation2)) != null) {
+									driver.findElement(By.xpath(blockedValidation2)).click();
+									if (driver.findElement(By.xpath(didClickWork2)) != null) {
+										testCasePassed2 = "pass";
+									}
+								} else {
+									testCasePassed2 = "fail";
+								}
+							case "doBlockedValidation3":
+								if (doBlockedValidation3 == true) {
+									if (driver.findElement(By.xpath(blockedValidation3)) != null) {
+										driver.findElement(By.xpath(blockedValidation3)).click();
+										if (driver.findElement(By.xpath(didClickWork3)) != null) {
+											testCasePassed3 = "pass";
+										}
+									} else {
+										testCasePassed3 = "fail";
+									}
+								}
+							case "doBlockedValidation4":
+								if (new WebDriverWait(driver, 11)
+										.until(ExpectedConditions.presenceOfElementLocated(By.xpath(blockedValidation4))) != null) {
+									testCasePassed4 = "pass";
+								} else {
+									testCasePassed4 = "fail";
+								}
+							}
+							case: "doBlockedValidation5":
+								if (driver.executeScript(blockedValidation5) != null) {
+									driver.executeScript(blockedValidation5);
+									testCasePassed5 = "pass";
+								} else {
+									testCasePassed5 = "fail";
+								}
+							}
+					   	case: "doBlockedValidation6";
+					   	if (driver.findElement(blockedValidation6) != null) {
+							driver.findElement(By.xpath(blockedValidation6a)).sendKeys(blockedValidation6b);
 						}
 					} else {
-						testCasePassed2 = "fail";
+						throw new IllegalStateException("\n" + appName + " isn't allowed or blocked");
 					}
-				}
+					default:
+						System.out.println("Something is broken");
+						break;
+		
 				
-				if (doAllowedValidation3 == true) {
-					if (driver.findElement(By.xpath(allowedValidation3)) != null) {
-						driver.findElement(By.xpath(allowedValidation3)).click();
-						if (driver.findElement(By.xpath(didClickWork3)) != null) {
-							testCasePassed3 = "pass";
-						}
-					} else {
-						testCasePassed3 = "fail";
-					}
-				}
-
-				if (doAllowedValidation4 == true) {
-					if (new WebDriverWait(driver, 11)
-							.until(ExpectedConditions.presenceOfElementLocated(By.xpath(allowedValidation4))) != null) {
-						testCasePassed4 = "pass";
-					} else {
-						testCasePassed4 = "fail";
-					}
-				}
-
-				if (doAllowedValidation5 == true) {
-					if (driver.executeScript(allowedValidation5) != null) {
-						driver.executeScript(allowedValidation5);
-						testCasePassed5 = "pass";
-					} else {
-						testCasePassed5 = "fail";
-					}
-				}
-				if (doAllowedValidation6 == true) {
-					driver.findElement(By.xpath(allowedValidation6a)).sendKeys(allowedValidation6b);
-				}
+				/*
 			} else if (allowed == false) {
 				if (doBlockedValidation1 == true) {
 					if (driver.findElement(By.xpath(blockedValidation1)) != null) {
@@ -473,6 +540,7 @@ public class RunApp {
 					}
 				}
 				if (doBlockedValidation6 == true) {
+				if (driver.findElement(blockedValidation6) != null) {
 					driver.findElement(By.xpath(blockedValidation6a)).sendKeys(blockedValidation6b);
 				}
 			} else {
@@ -586,9 +654,9 @@ public class RunApp {
 		} else {
 			throw new IllegalStateException("\n" + appName + " login state isn't defined");
 		}
+*/
 
-		if (testCasePassed1 == "fail" || testCasePassed2 == "fail" || testCasePassed3 == "fail" || testCasePassed4 == "fail"
-				|| testCasePassed5 == "fail" || testCasePassed6 == "fail") {
+		if (testCasePassed1.equals("fail") || testCasePassed2.equals("fail") || testCasePassed3.equals("fail") || testCasePassed4.equals("fail") || testCasePassed5.equals("fail") || testCasePassed6.equals("fail")) {
 			stepPassed = false;
 			System.out.println(testCasePassed1);
 			System.out.println(testCasePassed2);

@@ -6,6 +6,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.By;
+import org.junit.*;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -14,8 +15,10 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 
 public class RunApp {
-
-	String deviceUUID = "94a4b8bb";
+	
+	static Boolean hasSIMCard = true;
+	static String comment = "";
+	String deviceUUID = "FA6B30300278";
 	private String reportDirectory = "reports";
 	private String reportFormat = "xml";
 	private String testName = "Untitled";
@@ -25,24 +28,33 @@ public class RunApp {
 
 	public static void main(String[] args) throws MalformedURLException {
 
-		Boolean loggedIn = false;
+
 		Boolean allowed = false;
+		Boolean loggedIn = true;
 		Boolean stepPassed = false;
 		RunApp app = new RunApp();
-		String appName = "facebook";
-		stepPassed = app.openApp(appName, loggedIn, allowed);
+		String appName = "snapchat";
+		String deviceName = "Android";
+		stepPassed = app.openApp(appName, deviceName, loggedIn, allowed);
 		System.out.println("This test: " + stepPassed);
 
 	}
 
-	public Boolean openApp(final String appName, final Boolean loggedIn, final Boolean allowed)
+	public Boolean openApp(final String appName, final String deviceName, final Boolean loggedIn, final Boolean allowed)
 			throws MalformedURLException {// Finds what App is being tested, if logged in and if allowed
 
+		String appPackage = null;
+		String appActivity = null;
+		
 		dc.setCapability("reportDirectory", reportDirectory);
 		dc.setCapability("reportFormat", reportFormat);
 		dc.setCapability("testName", testName);
-		dc.setCapability(MobileCapabilityType.UDID, "94a4b8bb");
+		dc.setCapability(MobileCapabilityType.UDID, deviceUUID);
+		dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, appPackage);
+		dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, appActivity);
+		dc.setCapability("deviceName", deviceName);
 		driver = new AndroidDriver<>(new URL("http://localhost:4723/wd/hub"), dc);
+	//	dc.setCapability("app", appName); //FUCK
 		driver.setLogLevel(Level.INFO);
 
 		Activity activity = null;
@@ -52,12 +64,14 @@ public class RunApp {
 		Boolean doAllowedValidation3 = false;
 		Boolean doAllowedValidation4 = false;
 		Boolean doAllowedValidation5 = false;
+		Boolean doAllowedValidation6 = false;
 
 		Boolean doBlockedValidation1 = false;
 		Boolean doBlockedValidation2 = false;
 		Boolean doBlockedValidation3 = false;
 		Boolean doBlockedValidation4 = false;
 		Boolean doBlockedValidation5 = false;
+		Boolean doBlockedValidation6 = false;
 
 		Boolean stepPassed = null;
 
@@ -66,11 +80,15 @@ public class RunApp {
 		String allowedValidation3 = null;
 		String allowedValidation4 = null;
 		String allowedValidation5 = null;
+		String allowedValidation6a = null;
+		String allowedValidation6b = null;
 		String blockedValidation1 = null;
 		String blockedValidation2 = null;
 		String blockedValidation3 = null;
 		String blockedValidation4 = null;
 		String blockedValidation5 = null;
+		String blockedValidation6a = null;
+		String blockedValidation6b = null;
 		String didClickWork1 = null;
 		String didClickWork2 = null;
 		String didClickWork3 = null;
@@ -80,9 +98,14 @@ public class RunApp {
 		String password = null;
 		String username = null;
 		String openAppValidation = null;
+		
+		String comment = "";
+		
 		switch (appName) {// Switch for setting each test step variable for the App being tested
 
 		case "snapchat":
+			appPackage = "com.snapchat.android";
+			appActivity = ".LandingPageActivity";
 			dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.snapchat.android");
 			dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".LandingPageActivity");
 
@@ -130,6 +153,8 @@ public class RunApp {
 			break;
 
 		case "spotify":
+			appPackage = "com.spotify.music";
+			appActivity = ".MainActivity";
 			dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.spotify.music");
 			dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".MainActivity");
 			if (loggedIn == true) {
@@ -175,44 +200,45 @@ public class RunApp {
 			break;
 
 		case "whatsapp":
-			dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.whatsapp");
-			dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".Main");
+			if(RunApp.hasSIMCard == false) {
+				comment = "SIM Not installed skipped test step";
+			}
+			else {
+				appPackage = "com.whatsapp";
+				appActivity = ".Main";
+				dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.whatsapp");
+				dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".Main");
 			if (loggedIn == true) {
 				openAppValidation = "//*[@id='contact_row_container' and ./*[./*[@contentDescription='Ross']]]";
 				if (allowed == true) {
-					// TODO
+					allowedValidation1 = "//*[@id='fab']";
+					allowedValidation6a = "//*[@class='android.widget.LinearLayout' and @width>0 and ./*[@class='android.widget.LinearLayout' and ./*[@class='android.widget.FrameLayout' and ./*[@text='Ross']]]]";
+					allowedValidation6b = "automated message no need to reply";
+					allowedValidation2 = "//*[@id='send']";
+					allowedValidation4 = "//*[@id='status']";
 					doAllowedValidation1 = true;
+					doAllowedValidation6 = true;
 					doAllowedValidation2 = true;
-					doAllowedValidation3 = true;
-					allowedValidation1 = "//*[@id='entry']";
-					allowedValidation2 = "send doots";
-					allowedValidation3 = "//*[@id='send']";
-					// TODO
+					doAllowedValidation4 = true;
 				} else if (allowed == false) {
-					// TODO
+					blockedValidation1 = "//*[@id='fab']";
+					blockedValidation6a = "//*[@class='android.widget.LinearLayout' and @width>0 and ./*[@class='android.widget.LinearLayout' and ./*[@class='android.widget.FrameLayout' and ./*[@text='Ross']]]]";
+					blockedValidation6b = "automated message no need to reply";
+					blockedValidation2 = "//*[@id='send']";
+					blockedValidation4 = "//*[@contentDescription='Pending']";
 					doBlockedValidation1 = true;
+					doBlockedValidation6 = true;
 					doBlockedValidation2 = true;
-					doBlockedValidation3 = true;
-					blockedValidation1 = "//*[@id='entry']";
-					blockedValidation2 = "send doots";
-					blockedValidation3 = "//*[@id='send']";
-					// TODO
+					doBlockedValidation4 = true;
 				} else {
 					throw new IllegalStateException("\n Whatsapp is logged in but not allowed or denied");
 				}
 			} else if (loggedIn == false) {
-				password = "FZtest12345";
-				username = "FZtest";
-				logInStep1 = "//*[@text='AGREE AND CONTINUE']";
-				// TODO
+
 				if (allowed == true) {
-					// TODO
-					doAllowedValidation1 = true;
-					allowedValidation1 = "TBD"; // TODO
+
 				} else if (allowed == false) {
-					// TODO
-					doBlockedValidation1 = true;
-					blockedValidation1 = "//*[@text='A cellular data network is required to activate WhatsApp Messenger.']";
+
 				} else {
 					throw new IllegalStateException("\n Whatsapp is not logged in but not allowed or denied");
 				}
@@ -220,8 +246,12 @@ public class RunApp {
 				throw new IllegalStateException("\n Whatsapp isn't defined at all");
 			}
 			activity = new Activity("com.whatsapp", ".Main");
+			}
 			break;
+			
 		case "instagram":
+			appPackage = "com.instagram.android";
+			appActivity = ".activity.MainTabActivity";
 			dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.instagram.android");
 			dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".activity.MainTabActivity");
 			if (loggedIn == true) {
@@ -272,6 +302,8 @@ public class RunApp {
 
 			activity = new Activity("com.instagram.android", ".activity.MainTabActivity");
 		case "facebook":
+			appPackage = "com.facebook.katana";
+			appActivity = ".LoginActivity";
 	        dc.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, "com.facebook.katana");
 	        dc.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, ".LoginActivity");
 			if (loggedIn == true) {
@@ -309,20 +341,20 @@ public class RunApp {
 					blockedValidation4 = "//*[@class='android.widget.FrameLayout' and @width>0 and ./*[@class='android.widget.FrameLayout' and ./*[@id='content']]]";
 					doBlockedValidation4 = true;
 				} else {
-					throw new IllegalStateException("\n Snapchat is not logged in but not allowed or denied");
+					throw new IllegalStateException("\n Facebook is not logged in but not allowed or denied");
 				}
 			} else {
-				throw new IllegalStateException("\n Snapchat isn't defined at all");
+				throw new IllegalStateException("\n Facebook isn't defined at all");
 			}
 
-			activity = new Activity("kik.android", ".chat.activity.IntroActivity");
+			activity = new Activity("com.facebook.katana", ".LoginActivity");
 			break;	
 		default:
 			throw new IllegalStateException("\n App Not Defined!");
 		}
 
-		/*
-		 * After all the variables have been set
+		
+		/* After all the variables have been set
 		 * we can now move on to executing the tests on the device
 		 * based on if it's allowed and logged in
 		 */
@@ -389,6 +421,9 @@ public class RunApp {
 						testCasePassed5 = "fail";
 					}
 				}
+				if (doAllowedValidation6 == true) {
+					driver.findElement(By.xpath(allowedValidation6a)).sendKeys(allowedValidation6b);
+				}
 			} else if (allowed == false) {
 				if (doBlockedValidation1 == true) {
 					if (driver.findElement(By.xpath(blockedValidation1)) != null) {
@@ -399,6 +434,7 @@ public class RunApp {
 					} else {
 						testCasePassed1 = "fail";
 					}
+					
 				}
 				if (doBlockedValidation2 == true) {
 					if (driver.findElement(By.xpath(blockedValidation2)) != null) {
@@ -435,6 +471,9 @@ public class RunApp {
 					} else {
 						testCasePassed5 = "fail";
 					}
+				}
+				if (doBlockedValidation6 == true) {
+					driver.findElement(By.xpath(blockedValidation6a)).sendKeys(blockedValidation6b);
 				}
 			} else {
 				throw new IllegalStateException("\n" + appName + " isn't allowed or blocked");
@@ -488,7 +527,9 @@ public class RunApp {
 						testCasePassed5 = "fail";
 					}
 				}
-				// done
+				if (doAllowedValidation6 == true) {
+					driver.findElement(By.xpath(allowedValidation6a)).sendKeys(allowedValidation6b);
+				}
 			} else if (allowed == false) {
 				if (doBlockedValidation1 == true) {
 					if (driver.findElement(By.xpath(blockedValidation1)) != null) {
@@ -536,6 +577,9 @@ public class RunApp {
 						testCasePassed5 = "fail";
 					}
 				}
+				if (doBlockedValidation6 == true) {
+					driver.findElement(By.xpath(blockedValidation6a)).sendKeys(blockedValidation6b);
+				}
 			} else {
 				throw new IllegalStateException("\n" + appName + " is neither blocked nor allowed");
 			}
@@ -557,6 +601,7 @@ public class RunApp {
 			stepPassed = true;
 		}
 
+		RunApp.comment = comment;
 		return stepPassed;
 	}
 

@@ -1,10 +1,11 @@
-package test;
+package com.familyzone.qa.automation;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 public class KeyWords {
 
@@ -27,13 +28,13 @@ public class KeyWords {
 	public static void KeyWord()
 			throws InterruptedException, EncryptedDocumentException, InvalidFormatException, IOException {
 
-		int numberOfTestCases = FileReader.fireFoxTestResults.size();
+		final int numberOfTestCases = FileReader.fireFoxTestResults.size();
 
 		System.out.println("total length of TC: " + RunAutomation.stepsList.size());
 		System.out.println("total length of TC: " + numberOfTestCases);
 
 		for (int i = 0; i < numberOfTestCases; i++) {
-			ArrayList<String> temp = RunAutomation.stepsList.get(i);
+			final ArrayList<String> temp = (ArrayList<String>) RunAutomation.stepsList.get(i);
 
 			StepsKeyWords(temp, allowed);
 			ResultsKeyWords(RunAutomation.eResutlsList.get(i), FileReader.fireFoxTestResults.get(i),
@@ -44,10 +45,10 @@ public class KeyWords {
 	public static void StepsKeyWords(ArrayList<String> keyWordList, final Boolean loggenIn) throws InterruptedException, MalformedURLException {
 		Boolean allowed = null;
 		String appName = null;
-		String appPassword = null;
-		String appUsername = null;
+		final String appPassword = null;
+		final String appUsername = null;
 		for (int i = 0; i < testDataKeyWordList.size(); i++) {
-			String testData = testDataKeyWordList.get(i);
+			final String testData = testDataKeyWordList.get(i);
 			switch (testData) {
 			case "1":
 				break;
@@ -57,7 +58,7 @@ public class KeyWords {
 		}
 
 		for (int i = 0; i < eResultsKeyWordList.size(); i++) {
-			String eResults = eResultsKeyWordList.get(i);
+			final String eResults = eResultsKeyWordList.get(i);
 			switch (eResults) {
 			case "blocked":
 				allowed = false;
@@ -69,12 +70,12 @@ public class KeyWords {
 		}
 
 		for (int i = 0; i < stepsKeyWordList.size(); i++) {
-			String stepsKeyWord = stepsKeyWordList.get(i);
+			final String stepsKeyWord = stepsKeyWordList.get(i);
 			switch (stepsKeyWord) {
 			case "launch":
-				RunApp app = new RunApp();
+				final RunApp app = new RunApp();
 				appName = keyWordList.get(i + 1);
-				app.openApp(appName, loggedIn, allowed);
+				app.openApp(appName, stepsKeyWord, loggedIn, allowed);
 				break;
 			default:
 				break;
@@ -89,21 +90,21 @@ public class KeyWords {
 			String dateColumnRow)
 			throws InterruptedException, EncryptedDocumentException, InvalidFormatException, IOException {
 
-		String FamilyZoneHomePage = "https://www.familyzone.com/au/";
-		String myFamilyURL = "https://portal.familyzone.com/#myFamily";
-		String signInURL = "https://portal.familyzone.com/#login";
+		final String FamilyZoneHomePage = "https://www.familyzone.com/au/";
+		final String myFamilyURL = "https://portal.familyzone.com/#myFamily";
+		final String signInURL = "https://portal.familyzone.com/#login";
 
 		boolean results = false;
 
 		switch (keyWord) {
 		case "HOMEPAGEISDISPLAYED":
-			results = RunFunction.CompareURL(FamilyZoneHomePage);
+			//results = RunFunction.CompareURL(FamilyZoneHomePage);
 			break;
 		case "MYFAMILYPAGEISDISPLAYED":
-			results = RunFunction.CompareURL(myFamilyURL);
+			//results = RunFunction.CompareURL(myFamilyURL);
 			break;
 		case "SIGNINPAGEISDISPLAYED":
-			results = RunFunction.CompareURL(signInURL);
+			//results = RunFunction.CompareURL(signInURL);
 			break;
 		}
 

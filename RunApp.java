@@ -31,6 +31,7 @@ public class RunApp {
 
 	DesiredCapabilities dc = new DesiredCapabilities();
 
+	@Before
 	public static void main(String[] args) throws MalformedURLException {
 
 		final Boolean allowed = true;
@@ -44,6 +45,7 @@ public class RunApp {
 
 	}
 
+	@Test
 	public Boolean openApp(final String appName, final String deviceName, final Boolean loggedIn, final Boolean allowed)
 			throws MalformedURLException {// Finds what App is being tested, if logged in and if allowed
 

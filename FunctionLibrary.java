@@ -1,7 +1,6 @@
 package com.familyzone.qa.automation;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 
 public class FunctionLibrary {
 
@@ -10,15 +9,17 @@ public class FunctionLibrary {
 	static Boolean loggedIn = true;
 	static Boolean allowed = true;
 	static String stepPassed = "null";
-	static Boolean borrowRequestSent = false;
+	
 	String userA = "xpath=//*[@text='AUTO_PLAY_1_B']";
 	String userB = "xpath=//*[@text='AUTO_PLAY_1_A']";
+	Boolean borrowRequestSent = false;
+	Boolean borrowAccepted = false;
 
-	public void findAndRunAppVerdictFunctions(Boolean BorrowRequestSent, Boolean borrowAccepted) throws MalformedURLException {
+	public void findAndRunAppVerdictFunctions() throws MalformedURLException {
 
 		RunAppSeeTest RunAppSeeTest = new RunAppSeeTest();
 
-		String step = "borrow";//RunAutomation.currentStep;
+		String step = "borrow";// RunAutomation.currentStep;
 
 		switch (step) {
 		case "open facebook":
@@ -116,22 +117,26 @@ public class FunctionLibrary {
 			RunAppSeeTest.openApp();
 			break;
 		case "borrow":
-			int borrowRequestAttempts = 0;
-			int borrowAcceptAttempts = 0;
-			while (borrowRequestAttempts != 10 || borrowRequestSent != true) {
+			int Attempts = 0;
+			while (Attempts < 10 && borrowRequestSent != true) {
+				System.out.println("Made it this far 1a");
 				ChildAppFunctions.openChildApp();
-				borrowRequestSent = ChildAppFunctions.requestBorrow(BorrowRequestSent, userA, userB, borrowRequestAttempts);
-				ChildAppFunctions.requestBorrow(BorrowRequestSent, step, step, borrowRequestAttempts);
-				borrowRequestAttempts++;
+				System.out.println("Made it this far 2a");
+				borrowRequestSent = ChildAppFunctions.requestBorrow(userA, userB);
+				System.out.println("Made it this far 3a");
+				Attempts++;
+				System.out.println("Current Attempt " + Attempts);
 			}
-			while (borrowAcceptAttempts != 10 || borrowAccepted != true) {
+
+			Attempts = 0;
+			while (Attempts < 10 && borrowAccepted != true) {
+				System.out.println("Made it this far 1");
 				ZoneManagerFunctions.OpenZoneManager();
-				borrowAccepted = ZoneManagerFunctions.AcceptBorrow(borrowAccepted, borrowAcceptAttempts);
-				ZoneManagerFunctions.AcceptBorrow(borrowAccepted, borrowAcceptAttempts);
-				borrowRequestAttempts++;
+				System.out.println("Made it this far 2");
+				borrowAccepted = ZoneManagerFunctions.AcceptBorrow(borrowAccepted);
+				System.out.println("Made it this far 3");
+				Attempts++;
 			}
-
-
 			break;
 
 		default:

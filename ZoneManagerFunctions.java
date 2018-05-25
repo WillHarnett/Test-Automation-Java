@@ -9,34 +9,26 @@ import org.testng.asserts.Assertion; //TODO
 
 public class ZoneManagerFunctions {
 
-	private static String host = "localhost";
-	private static int port = 8889;
-	protected static Client client = null;
+	static Client client = RunAutomation.client;
 	static String deviceName = FunctionLibrary.deviceName;
 	String stepPassed = FunctionLibrary.stepPassed;
 
 	public static void OpenZoneManager() {
-		client = new Client(host, port, true);
-		client.setDevice("adb:Pixel");
-		client.launch("au.com.familyzone/.activities.SplashActivity", false, true);
+		client.launch("com.familyzone.zonemanager/.activity.PreliminaryActivity", false, true);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static Boolean AcceptBorrow(Boolean borrowAccepted, int borrowAcceptAttemps) {
-		client = new Client(host, port, true);
-		client.setDevice(deviceName);
+	public static Boolean AcceptBorrow(Boolean borrowAccepted) {
 		client.click("NATIVE", "xpath=//*[@text='To do']", 0, 1, 0, 0);
 		client.swipe("Up", 500);
 		if (client.waitForElement("NATIVE", "xpath=//*[@text='ALLOW']", 0, 30000)) {
-			borrowAccepted = true;
 			client.click("NATIVE", "xpath=//*[@text='ALLOW']", 0, 1);
 			client.click("NATIVE", "xpath=//*[@text='REST OF TODAY']", 0, 1, 0, 0);
 			client.sleep(1500);
+			return true;
+		} else {
+			return false;
 		}
-		else {
-			borrowAccepted = false;
-		}
-		return borrowAccepted;
-		
+
 	}
 }

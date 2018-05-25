@@ -1,11 +1,10 @@
 package com.familyzone.qa.automation;
 
-import com.experitest.client.*;
-import java.net.MalformedURLException; //Redundant
 import java.util.ArrayList;
-import org.junit.*;
-import org.testng.asserts.SoftAssert; //TODO
-import org.testng.asserts.Assertion; //TODO
+
+import org.junit.After;
+
+import com.experitest.client.Client;
 
 public class RunAppSeeTest {
 	private static String host = "localhost";
@@ -14,7 +13,6 @@ public class RunAppSeeTest {
 	static Boolean hasSIMCard = true;
 	static String comment = "";
 
-	@Test
 	public void openApp() {// Finds what App is being tested, if logged in and if
 
 		Boolean allowed = FunctionLibrary.allowed;
@@ -22,7 +20,7 @@ public class RunAppSeeTest {
 		String appName = FunctionLibrary.appName;
 		String deviceName = FunctionLibrary.deviceName;
 		String stepPassed = FunctionLibrary.stepPassed;
-		
+
 		client = new Client(host, port, true);
 		client.setDevice(deviceName);
 		// stepPassed = RunAppSeeTest.openApp(appName, deviceName, loggedIn, allowed);
@@ -48,7 +46,7 @@ public class RunAppSeeTest {
 		String password = "null";
 		String username = "null";
 		String openAppValidation = "null";
-
+	
 		String comment = "";
 
 		switch (appName) {// Switch for setting each test step variable for the App being tested
@@ -636,7 +634,7 @@ public class RunAppSeeTest {
 					System.out.println(testCasePassed5);
 					System.out.println(testCasePassed6);
 					System.out.println(testCasePassed7);
-					System.out.println(testCasePassed7);
+					System.out.println(testCasePassed8);
 				} else {
 					System.out.println("All test cases passed!");
 				}
